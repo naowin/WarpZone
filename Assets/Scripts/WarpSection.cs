@@ -30,14 +30,17 @@ public class WarpSection : MonoBehaviour {
         curveSegmentCount = 20;
         float uStep = (2f * Mathf.PI) / curveSegmentCount;
         float vStep = (2f * Mathf.PI) / warpSegmentCount;
-
+        /*
         for (int u = 0; u < curveSegmentCount; u++) {
             for (int v = 0; v < warpSegmentCount; v++) {
                 Vector3 point = GetPointOnTorus(u * uStep, v * vStep);
                 Gizmos.DrawSphere(point, 0.1f);
             }
         }
+        */
 
+        var point = new Vector3(0, 13.9f, 0);
+        Gizmos.DrawSphere(point, 0.1f);
     }
 
     private void Awake () 
@@ -61,8 +64,54 @@ public class WarpSection : MonoBehaviour {
 
     private void addTetraHedron()
     {
-        vertices = new Vector3[(warpSegmentCount * curveSegmentCount * 4) + 1];
-        vertices = mesh.vertices;
+        var newvertices = new Vector3[(warpSegmentCount * curveSegmentCount * 4) + 1];
+        Debug.Log("start verts : " + mesh.vertices.Length + " now: " + newvertices.Length);
+
+        for(var i = 0 ; i < mesh.vertices.Length; i++){
+            newvertices[i] = mesh.vertices[i];
+        }
+            
+        float halfuStep = (ringDistance / curveSegmentCount) / 2; 
+        float halfvStep = ((2f * Mathf.PI) / warpSegmentCount) / 2;
+        Vector3 p;
+        float r = (curveRadius + (warpRadius/2) * Mathf.Cos(halfvStep));
+        p.x = r * Mathf.Sin(halfuStep);
+        p.y = r * Mathf.Cos(halfuStep);
+        p.z = warpRadius * Mathf.Sin(halfvStep);
+
+        newvertices[newvertices.Length - 1] = p;
+        vertices = mesh.vertices = newvertices;
+
+        Debug.Log(vertices.Length);
+        //SetUv();
+
+        var newtri = new int[(warpSegmentCount * curveSegmentCount * 6) + 12];
+        for(var i = 0 ; i < mesh.triangles.Length; i++){
+            newtri[i] = mesh.triangles[i];
+        }
+
+        newtri[mesh.triangles.Length] = 1;
+        newtri[mesh.triangles.Length + 1] = 0;
+        newtri[mesh.triangles.Length + 2] = mesh.vertices.Length - 1;
+
+
+        newtri[mesh.triangles.Length + 3] = 0;
+        newtri[mesh.triangles.Length + 4] = 96;
+        newtri[mesh.triangles.Length + 5] = mesh.vertices.Length - 1;
+
+
+        newtri[mesh.triangles.Length + 6] = 97;
+        newtri[mesh.triangles.Length + 7] = 1;
+        newtri[mesh.triangles.Length + 8] = mesh.vertices.Length - 1;
+
+        newtri[mesh.triangles.Length + 9] = 96;
+        newtri[mesh.triangles.Length + 10] = 97;
+        newtri[mesh.triangles.Length + 11] = mesh.vertices.Length - 1;
+
+
+        mesh.triangles = newtri;
+        mesh.RecalculateNormals();
+        //{}
     }
 
     private Vector3 GetPointOnTorus (float u, float v) 
@@ -73,25 +122,6 @@ public class WarpSection : MonoBehaviour {
         p.y = r * Mathf.Cos(u);
         p.z = warpRadius * Mathf.Sin(v);
         return p;
-    }
-
-    private void SetVertices () 
-    {
-        vertices = new Vector3[warpSegmentCount * curveSegmentCount * 4];
-
-        //float uStep = (2f * Mathf.PI) / curveSegmentCount;
-        float uStep = ringDistance / curveSegmentCount; 
-        curveAngle = uStep * curveSegmentCount * (360f / (2f * Mathf.PI));
-        CreateFirstRing(uStep);
-        int iDelta = warpSegmentCount * 4;
-        int i = iDelta;
-        for(var u = 2; u <= curveSegmentCount; u++) 
-        {
-            CreateQuadRing(u * uStep, i);
-            i += iDelta;
-        }
-
-        mesh.vertices = vertices;
     }
 
     private void SetTriangles () 
@@ -124,6 +154,25 @@ public class WarpSection : MonoBehaviour {
         }
 
         mesh.uv = uv;
+    }
+
+    private void SetVertices () 
+    {
+        vertices = new Vector3[warpSegmentCount * curveSegmentCount * 4];
+
+        //float uStep = (2f * Mathf.PI) / curveSegmentCount;
+        float uStep = ringDistance / curveSegmentCount; 
+        curveAngle = uStep * curveSegmentCount * (360f / (2f * Mathf.PI));
+        CreateFirstRing(uStep);
+        int iDelta = warpSegmentCount * 4;
+        int i = iDelta;
+        for(var u = 2; u <= curveSegmentCount; u++) 
+        {
+            CreateQuadRing(u * uStep, i);
+            i += iDelta;
+        }
+
+        mesh.vertices = vertices;
     }
 
     private void CreateFirstRing(float u) 
