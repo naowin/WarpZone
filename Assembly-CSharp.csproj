@@ -46,9 +46,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Scripts\TestScrip.cs" />
-     <Compile Include="Assets\Scripts\WarpSection.cs" />
+     <Compile Include="Assets\Scripts\SmallTetrahedron.cs" />
+     <Compile Include="Assets\Scripts\Warp.cs" />
+     <Compile Include="Assets\Scripts\WarpStone.cs" />
      <Compile Include="Assets\Scripts\WarpSystem.cs" />
+     <Compile Include="Assets\Scripts\Warpings.cs" />
      <Compile Include="Assets\Scripts\Warpster.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>

@@ -8,7 +8,7 @@ public class Warpster : MonoBehaviour {
     public float velocity;
     public float rotationVelocity;
 
-    private WarpSection currentSection;
+    private Warp currentSection;
     private float spaceRotation;
     private float sparkRotation;
     private Transform space;
