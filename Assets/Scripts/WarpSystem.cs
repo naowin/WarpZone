@@ -53,6 +53,7 @@ public class WarpSystem : MonoBehaviour {
         {
             int startIndex = Random.Range(0, warp.warpSegmentCount);
             int depthIndex = Random.Range(0, warp.CurveSegmentCount);
+            int warpStoneFactor = Random.Range(1, 4);
             WarpStone wStone = Instantiate<WarpStone>(warpStonePrefab);
             wStone.warpings = new Warpings(
                 startIndex, 
@@ -62,7 +63,8 @@ public class WarpSystem : MonoBehaviour {
                 warp.ringDistance,
                 warp.CurveRadius, 
                 warp.CurveSegmentCount,
-                warp.RelativeRotation);
+                warp.RelativeRotation,
+                warpStoneFactor);
             wStone.transform.SetParent(warp.transform, false);
             wStone.Generate();
         }

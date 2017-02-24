@@ -81,8 +81,6 @@ public class Warp : MonoBehaviour {
     private void SetVertices () 
     {
         vertices = new Vector3[warpSegmentCount * curveSegmentCount * 4];
-
-        //float uStep = (2f * Mathf.PI) / curveSegmentCount;
         float uStep = ringDistance / curveSegmentCount; 
         curveAngle = uStep * curveSegmentCount * (360f / (2f * Mathf.PI));
         CreateFirstRing(uStep);

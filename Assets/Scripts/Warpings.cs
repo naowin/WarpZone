@@ -12,8 +12,9 @@ public class Warpings {
     public float curveRadius { get; set; }
     public int curveSegmentCount { get; set; }
     public float relativeRotation { get; set; }
+    public int warpStoneFactor { get; set; }
 
-    public Warpings(int startIndex, int startDepth, float warpRadius, int warpSegmentCount, float ringDistance, float curveRadius, int curveSegmentCount, float relativeRotation)
+    public Warpings(int startIndex, int startDepth, float warpRadius, int warpSegmentCount, float ringDistance, float curveRadius, int curveSegmentCount, float relativeRotation, int warpStoneFactor)
     { 
         this.startIndex = startIndex;
         this.depthIndex = startDepth;
@@ -23,5 +24,6 @@ public class Warpings {
         this.curveRadius = curveRadius;
         this.curveSegmentCount = curveSegmentCount;
         this.relativeRotation = relativeRotation;
+        this.warpStoneFactor = warpStoneFactor;
     }
 }
