@@ -64,7 +64,9 @@ public class WarpSystem : MonoBehaviour {
                 warp.CurveRadius, 
                 warp.CurveSegmentCount,
                 warp.RelativeRotation,
-                warpStoneFactor);
+                warpStoneFactor,
+                Warpings.WarpStoneMode.Smoth,
+                false);
             wStone.transform.SetParent(warp.transform, false);
             wStone.Generate();
         }

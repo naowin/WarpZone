@@ -49,6 +49,9 @@
      <Compile Include="Assets\Scripts\SmallTetrahedron.cs" />
      <Compile Include="Assets\Scripts\Warp.cs" />
      <Compile Include="Assets\Scripts\WarpStone.cs" />
+     <Compile Include="Assets\Scripts\WarpStones\BlockStone.cs" />
+     <Compile Include="Assets\Scripts\WarpStones\HardStone.cs" />
+     <Compile Include="Assets\Scripts\WarpStones\SmothStone.cs" />
      <Compile Include="Assets\Scripts\WarpSystem.cs" />
      <Compile Include="Assets\Scripts\Warpings.cs" />
      <Compile Include="Assets\Scripts\Warpster.cs" />

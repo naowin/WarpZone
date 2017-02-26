@@ -13,8 +13,11 @@ public class Warpings {
     public int curveSegmentCount { get; set; }
     public float relativeRotation { get; set; }
     public int warpStoneFactor { get; set; }
+    public WarpStoneMode mode { get; set; }
+    public bool useUvs { get; set; }
+    public int depthFactor = 1; // warpings.warpStoneFactor < 4 ? 1 : 2;
 
-    public Warpings(int startIndex, int startDepth, float warpRadius, int warpSegmentCount, float ringDistance, float curveRadius, int curveSegmentCount, float relativeRotation, int warpStoneFactor)
+    public Warpings(int startIndex, int startDepth, float warpRadius, int warpSegmentCount, float ringDistance, float curveRadius, int curveSegmentCount, float relativeRotation, int warpStoneFactor, WarpStoneMode mode, bool useUvs)
     { 
         this.startIndex = startIndex;
         this.depthIndex = startDepth;
@@ -25,5 +28,13 @@ public class Warpings {
         this.curveSegmentCount = curveSegmentCount;
         this.relativeRotation = relativeRotation;
         this.warpStoneFactor = warpStoneFactor;
+        this.mode = mode;
+        this.useUvs = useUvs;
+    }
+
+    public enum WarpStoneMode
+    { 
+        TetraHedron, 
+        Smoth,
     }
 }
