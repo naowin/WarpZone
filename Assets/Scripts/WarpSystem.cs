@@ -9,28 +9,45 @@ public class WarpSystem : MonoBehaviour {
     public int warpCount;
 
     private Warp[] warps;
+    private Warpings.WarpStoneMode[] warpstone; 
+    private WarpStone wrpstn = new WarpStone();
 
     void Awake()
     {
+        warpstone = new Warpings.WarpStoneMode[7];
+        warpstone[0] = Warpings.WarpStoneMode.Smoth;
+        warpstone[1] = Warpings.WarpStoneMode.Smoth;
+        warpstone[3] = Warpings.WarpStoneMode.Smoth;
+        warpstone[4] = Warpings.WarpStoneMode.Smoth;
+        warpstone[5] = Warpings.WarpStoneMode.Smoth;
+        warpstone[6] = Warpings.WarpStoneMode.WarpBlock;
+
         warps = new Warp[warpCount];
 
         for(int i = 0 ; i < warps.Length; i++)
         {
-            Warp ws = warps[i] = Instantiate<Warp>(warpPrefab);
-            ws.transform.SetParent(transform, false);
-            ws.Generate();
-            if(i > 0) {
-                ws.AlignWith(warps[i - 1]);
-            }
-
-            GenerateVoidStone(warps[i]);
+            Warp warp = warps[i] = Instantiate<Warp>(warpPrefab);
+            warp.transform.SetParent(transform, false);
         }
-
-      AlignNextWarpWithOrigin();
     }
 
     public Warp SetupFirstWarp()
     {
+        for(int i = 0; i < warps.Length; i++)
+        {
+            Warp warp = warps[i];
+            warp.Generate();
+            if(i > 0) {
+                warp.AlignWith(warps[i - 1]);
+            }
+
+            if(i > 1)
+            {
+                GenerateVoidStone(warps[i]);
+            }
+        }
+
+        AlignNextWarpWithOrigin();
         transform.localPosition = new Vector3(0f, -warps[1].CurveRadius);
         return warps[1];
     }
@@ -44,33 +61,6 @@ public class WarpSystem : MonoBehaviour {
         warps[warps.Length - 1].AlignWith(warps[warps.Length - 2]);
         transform.localPosition = new Vector3(0f, -warps[1].CurveRadius);
         return warps[1];
-    }
-
-    private void GenerateVoidStone(Warp warp) 
-    {
-        int nrOfTags = Random.Range(8, warp.CurveSegmentCount);
-        for(int n = 0; n < nrOfTags; n++)
-        {
-            int startIndex = Random.Range(0, warp.warpSegmentCount);
-            int depthIndex = Random.Range(0, warp.CurveSegmentCount);
-            int warpStoneFactor = Random.Range(1, 4);
-            WarpStone wStone = Instantiate<WarpStone>(warpStonePrefab);
-            wStone.warpings = new Warpings(
-                startIndex, 
-                depthIndex,
-                warp.warpRadius, 
-                warp.warpSegmentCount, 
-                warp.ringDistance,
-                warp.CurveRadius, 
-                warp.CurveSegmentCount,
-                warp.RelativeRotation,
-                warpStoneFactor,
-                Warpings.WarpStoneMode.Smoth,
-                false);
-            wStone.transform.SetParent(warp.transform, false);
-            wStone.Generate();
-        }
-
     }
 
     private void AlignNextWarpWithOrigin()
@@ -106,13 +96,114 @@ public class WarpSystem : MonoBehaviour {
         warps[warps.Length - 1] = ws;
     }
 
-	// Use this for initialization
-    void Start () {
-
+    private void GenerateVoidStone(Warp warp)
+    {
+        switch(Random.Range(0,5))
+        {
+            case 0:
+                GenerateSpiralVoidStone(warp);
+                break;
+            case 1: 
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+                GenerateNormalVoidStone(warp);
+                break;
+        }
     }
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+
+    private void GenerateNormalVoidStone(Warp warp) 
+    {
+        for(int i = 0; i < warp.CurveSegmentCount; i++)
+        {
+            int[] indexes = new int[warp.warpSegmentCount];
+            int numberOfWarpstones = Random.Range(1, 4);
+            int depthFactor = 0;
+            for(int n = 0; n < numberOfWarpstones; n++)
+            {
+                int startIndex = Random.Range(0, warp.warpSegmentCount);
+                while(indexes[startIndex] > 0)
+                {
+                    startIndex = Random.Range(0, warp.warpSegmentCount);
+                }
+
+                indexes[startIndex] = 1;
+                int warpStoneFactor = Random.Range(1, 3);
+                if (warpStoneFactor > depthFactor)
+                {
+                    depthFactor = warpStoneFactor;
+                }
+                
+                WarpStone wStone = Instantiate<WarpStone>(warpStonePrefab);
+                wStone.warpings = new Warpings(
+                    startIndex, 
+                    i,
+                    warp.warpRadius, 
+                    warp.warpSegmentCount, 
+                    warp.ringDistance,
+                    warp.CurveRadius, 
+                    warp.CurveSegmentCount,
+                    warp.RelativeRotation,
+                    warpStoneFactor,
+                    warpstone[Random.Range(0,6)],
+                    false);
+                wStone.transform.SetParent(warp.transform, false);
+                wStone.Generate();
+            }
+
+            i += depthFactor;
+        }
+    }
+
+    private void GenerateSpiralVoidStone(Warp warp)
+    {
+        int direction = Random.value < 0.5f ? 1 : -1;
+        int startIndex = Random.Range(0, warp.warpSegmentCount);
+
+        for(int i = 0 ; i < warp.CurveSegmentCount; i++)
+        {
+            int warpStoneFactor = Random.Range(1, 2);
+
+            WarpStone wStone = Instantiate<WarpStone>(warpStonePrefab);
+            wStone.warpings = new Warpings(
+                startIndex, 
+                i,
+                warp.warpRadius, 
+                warp.warpSegmentCount, 
+                warp.ringDistance,
+                warp.CurveRadius, 
+                warp.CurveSegmentCount,
+                warp.RelativeRotation,
+                warpStoneFactor,
+                warpstone[6],
+                false);
+            wStone.transform.SetParent(warp.transform, false);
+            wStone.Generate();
+
+            if(i % 2 == 0)
+            {
+                wStone = Instantiate<WarpStone>(warpStonePrefab);
+                wStone.warpings = new Warpings(
+                    Random.Range(0, warp.warpSegmentCount), 
+                    i,
+                    warp.warpRadius, 
+                    warp.warpSegmentCount, 
+                    warp.ringDistance,
+                    warp.CurveRadius, 
+                    warp.CurveSegmentCount,
+                    warp.RelativeRotation,
+                    1,
+                    warpstone[0],
+                    false);
+                wStone.transform.SetParent(warp.transform, false);
+                wStone.Generate();
+            }
+
+            i += warpStoneFactor;
+            startIndex += warpStoneFactor * direction;
+        }
+    }
+
+    // {}
 }

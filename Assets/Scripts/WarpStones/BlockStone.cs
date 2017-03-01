@@ -9,104 +9,106 @@ public class BlockStone {
     private Mesh mesh;
     private Vector3[] vertices;
     private int[] triangles;
+    private BaseStone baseStone = new BaseStone();
 
     public Mesh Create(Mesh mesh){
         this.mesh = mesh;
-        SetVertices();
-        SetUvs();
-        SetTriangles();
+        this.baseStone.warpings = warpings;
+        this.mesh.vertices = SetVertices();
+        if(warpings.useUvs)
+        {
+            this.mesh.uv = SetBlockUvs(mesh);
+        }
+
+        this.mesh.triangles = SetTriangles();
         return mesh;
     }
 
-    public void SetVertices()
+    public Vector3[] SetVertices()
     {
-        vertices = new Vector3[8];
+        vertices = new Vector3[4 * 6];
+        Vector3[] point = new Vector3[8];
         float vStep = (2f * Mathf.PI) / warpings.warpSegmentCount;
         float uStep = warpings.ringDistance / warpings.curveSegmentCount; 
-        Vector3 vertexA = GetPointOnTorus(warpings.depthIndex * uStep, warpings.startIndex * vStep);
-        Vector3 vertexB = GetPointOnTorus((warpings.depthIndex + warpings.depthFactor) * uStep, warpings.startIndex * vStep);
+        int startIndex = warpings.startIndex;
+        int endIndex = warpings.startIndex + (warpings.warpSegmentCount / 2);
+        if(endIndex > warpings.warpSegmentCount)
+        {
+            startIndex -= (warpings.warpSegmentCount / 2);
+            endIndex -= (warpings.warpSegmentCount / 2);                
+        }
 
-        // VertexA
-        vertices[0] = vertexA;
-        vertices[1] = vertexA = GetPointOnTorus(warpings.depthIndex * uStep, (warpings.startIndex + warpings.warpStoneFactor) * vStep);
+        point[0] = this.baseStone.GetPointOnTorus(warpings.depthIndex * uStep, startIndex * vStep);
+        point[1] = this.baseStone.GetPointOnTorus(warpings.depthIndex * uStep, (startIndex + warpings.warpStoneFactor) * vStep);
+        point[2] = this.baseStone.GetPointOnTorus((warpings.depthIndex + warpings.depthFactor) * uStep, (startIndex + warpings.warpStoneFactor) * vStep);
+        point[3] = this.baseStone.GetPointOnTorus((warpings.depthIndex + warpings.depthFactor) * uStep, startIndex * vStep);
 
-        // VertexB
-        vertices[2] = vertexB;
-        vertices[3] = vertexB = GetPointOnTorus((warpings.depthIndex + warpings.depthFactor) * uStep, (warpings.startIndex + warpings.warpStoneFactor) * vStep);
-        vertices[4] = CreateEndpoint((warpings.depthIndex) * (uStep / 2), (warpings.startIndex + warpings.warpStoneFactor) * (vStep / 2)); 
-        mesh.vertices = vertices;
+        point[4] = this.baseStone.GetPointOnTorus(warpings.depthIndex * uStep, endIndex * vStep);
+        point[5] = this.baseStone.GetPointOnTorus((warpings.depthIndex + warpings.depthFactor) * uStep, endIndex * vStep);
+        point[6] = this.baseStone.GetPointOnTorus((warpings.depthIndex + warpings.depthFactor) * uStep, (endIndex + warpings.warpStoneFactor) * vStep);
+        point[7] = this.baseStone.GetPointOnTorus(warpings.depthIndex * uStep, (endIndex + warpings.warpStoneFactor) * vStep);
+
+
+        int verticeIndex = 0;
+        for(int cubeSides = 0; cubeSides < 3; cubeSides++)
+        {
+            
+            vertices[verticeIndex] = point[cubeSides + 1];
+            vertices[verticeIndex + 1] = point[cubeSides];
+            vertices[verticeIndex + 2] = point[cubeSides + 4];
+            vertices[verticeIndex + 3] = point[cubeSides + 1];
+            vertices[verticeIndex + 4] = point[cubeSides + 4];
+            vertices[verticeIndex + 5] = point[cubeSides + 5];
+            verticeIndex += 6;
+        }
+
+
+        vertices[verticeIndex] = point[0];
+        vertices[verticeIndex + 1] = point[3];
+        vertices[verticeIndex + 2] = point[7];
+        vertices[verticeIndex + 3] = point[7];
+        vertices[verticeIndex + 4] = point[0];
+        vertices[verticeIndex + 5] = point[4];
+
+        return vertices;
     }
 
-    private void SetUvs() 
+    private Vector2[] SetBlockUvs(Mesh mesh) 
     {
-        var uvs = new Vector2[vertices.Length];
+        var uvs = new Vector2[mesh.vertices.Length];
         for(int i = 0; i < uvs.Length; i++) 
         {
             uvs[i] = new Vector2(0, 1);
         }   
-
-        mesh.uv = uvs;
+        return uvs;
     } 
 
-    private void SetTriangles() 
+    private int[] SetTriangles() 
     {
-        triangles = new int[warpings.warpStoneFactor * 6 + 6];
+        triangles = new int[4 * 6];
 
-        triangles[0] = 1;
-        triangles[1] = 0;
-        triangles[2] = 4;
-
-        triangles[3] = 2;
-        triangles[4] = 3;
-        triangles[5] = 4;
-
-        triangles[6] = 3;
-        triangles[7] = 1;
-        triangles[8] = 4;
-
-        triangles[9] = 0;
-        triangles[10] = 2;
-        triangles[11] = 4;
-
-        mesh.triangles = triangles;
-    }
-
-    private Vector3 GetPointOnTorus (float u, float v) 
-    {
-        Vector3 p;
-        float r = (warpings.curveRadius + warpings.warpRadius * Mathf.Cos(v));
-        p.x = r * Mathf.Sin(u);
-        p.y = r * Mathf.Cos(u);
-        p.z = warpings.warpRadius * Mathf.Sin(v);
-        return p;
-    }
-
-    private Vector3 GetPointOnTorusSmallerRadius (float u, float v) 
-    {
-        float reduceRadius = warpings.warpStoneFactor;
-        if (reduceRadius > 2)
+        int triangleIndex = 0;
+        for(int cubeSides = 0; cubeSides < 3; cubeSides++)
         {
-            reduceRadius = 2;
+            triangles[triangleIndex] = triangleIndex;
+            triangles[triangleIndex + 1] = triangleIndex + 1;
+            triangles[triangleIndex + 2] = triangleIndex + 2;
+
+            triangles[triangleIndex + 3] = triangleIndex + 3;
+            triangles[triangleIndex + 4] = triangleIndex + 4;
+            triangles[triangleIndex + 5] = triangleIndex + 5;
+            triangleIndex += 6;
         }
 
-        Vector3 p;
-        float r = (warpings.curveRadius + (warpings.warpRadius - (reduceRadius * 0.3f)) * Mathf.Cos(v));
-        p.x = r * Mathf.Sin(u);
-        p.y = r * Mathf.Cos(u);
-        p.z = (warpings.warpRadius - (reduceRadius * 0.3f)) * Mathf.Sin(v);
-        return p;
+        triangles[triangleIndex] = vertices.Length - 6;
+        triangles[triangleIndex + 1] = vertices.Length - 5;
+        triangles[triangleIndex + 2] = vertices.Length - 4;
+        triangles[triangleIndex + 3] = vertices.Length - 3;
+        triangles[triangleIndex + 4] = vertices.Length - 2;
+        triangles[triangleIndex + 5] = vertices.Length - 1;
+
+        return triangles;
     }
 
-    private Vector3 CreateEndpoint(float u, float v)
-    {
-        float vStep = (2f * Mathf.PI) / warpings.warpSegmentCount;
-        float uStep = warpings.ringDistance / warpings.curveSegmentCount; 
-        Vector3 vertexA = GetPointOnTorusSmallerRadius(warpings.depthIndex * uStep, warpings.startIndex * vStep);
-        Vector3 vertexB = GetPointOnTorusSmallerRadius((warpings.depthIndex + 1) * uStep, warpings.startIndex * vStep);
-        Vector3 vertexC = GetPointOnTorusSmallerRadius(warpings.depthIndex * uStep, (warpings.startIndex + warpings.warpStoneFactor) * vStep);
-        Vector3 vertexD = GetPointOnTorusSmallerRadius((warpings.depthIndex + 1) * uStep, (warpings.startIndex + warpings.warpStoneFactor) * vStep);
-        Vector3 endPoint = (vertexA + vertexB + vertexC + vertexD) / 4;
-
-        return endPoint;
-    }
+    // {} [] 
 }

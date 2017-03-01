@@ -15,6 +15,7 @@ public class Warpings {
     public int warpStoneFactor { get; set; }
     public WarpStoneMode mode { get; set; }
     public bool useUvs { get; set; }
+    // how deep the warpstone will be...
     public int depthFactor = 1; // warpings.warpStoneFactor < 4 ? 1 : 2;
 
     public Warpings(int startIndex, int startDepth, float warpRadius, int warpSegmentCount, float ringDistance, float curveRadius, int curveSegmentCount, float relativeRotation, int warpStoneFactor, WarpStoneMode mode, bool useUvs)
@@ -36,5 +37,6 @@ public class Warpings {
     { 
         TetraHedron, 
         Smoth,
+        WarpBlock,
     }
 }

@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Warpster : MonoBehaviour {
+public class Warper : MonoBehaviour {
 
     public WarpSystem ws;
     public float velocity;
     public float rotationVelocity;
+    public GameMenu gameMenu;
 
     private Warp currentSection;
     private float spaceRotation;
@@ -18,12 +19,22 @@ public class Warpster : MonoBehaviour {
     private float systemRotation;
     private float distanceTraveled;
 
-    private void Start()
+    private void Awake()
     {
         space = ws.transform.parent;
-        rotator = transform.GetChild(0);            
+        rotator = transform.GetChild(0);       
+        gameObject.SetActive(false);
+    }
+
+    public void StartGame()
+    {
+        sparkRotation = 0f;
+        spaceRotation = 0f;
+        systemRotation = 0f;
+        distanceTraveled = 0f;
         currentSection = ws.SetupFirstWarp();
         SetupCurrentWarp();
+        gameObject.SetActive(true);
     }
 
     private void Update()
@@ -73,6 +84,12 @@ public class Warpster : MonoBehaviour {
         }
 
         rotator.localRotation = Quaternion.Euler(sparkRotation, 0f, 0f);
+    }
+
+    public void Fade()
+    {
+        gameObject.SetActive(false);
+        gameMenu.GameOver();
     }
 
     // {}
