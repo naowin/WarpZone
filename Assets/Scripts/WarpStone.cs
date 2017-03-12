@@ -8,8 +8,9 @@ public class WarpStone : MonoBehaviour {
     private Vector3[] vertices;
     private int[] triangles;
     private HardStone hardStone = new HardStone();
-    private SmothStone smothStone  = new SmothStone();
+    private SmothStone smothStone = new SmothStone();
     private BlockStone blockStone = new BlockStone();
+    private BlockWarpStone smothBlockStone = new BlockWarpStone();
     public Warpings warpings { get; set;}
 
     void Awake() 
@@ -25,15 +26,23 @@ public class WarpStone : MonoBehaviour {
         switch(warpings.mode) {
             case Warpings.WarpStoneMode.TetraHedron:
                 this.hardStone.warpings = warpings;
+                this.mesh.name = "WarpStone";
                 this.mesh = this.hardStone.Create(mesh);
                 break;
             case Warpings.WarpStoneMode.Smoth:
                 this.smothStone.warpings = warpings;
+                this.mesh.name = "SmoothWarpStone";
                 this.mesh = this.smothStone.Create(mesh);
                 break;
             case Warpings.WarpStoneMode.WarpBlock:
                 this.blockStone.warpings = warpings;
+                this.mesh.name = "WarpBlock";
                 this.mesh = this.blockStone.Create(mesh);
+                break;
+            case Warpings.WarpStoneMode.SmothWarpBlock:
+                this.smothBlockStone.warpings = warpings;
+                this.mesh.name = "SmoothWarpBlock";
+                this.mesh = this.smothBlockStone.Create(mesh);
                 break;
         }
 

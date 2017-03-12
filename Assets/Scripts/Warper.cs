@@ -26,12 +26,13 @@ public class Warper : MonoBehaviour {
         gameObject.SetActive(false);
     }
 
-    public void StartGame()
+    public void StartGame(int gameMode)
     {
         sparkRotation = 0f;
         spaceRotation = 0f;
         systemRotation = 0f;
         distanceTraveled = 0f;
+        ws.GameMode = gameMode;
         currentSection = ws.SetupFirstWarp();
         SetupCurrentWarp();
         gameObject.SetActive(true);

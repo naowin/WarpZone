@@ -38,5 +38,6 @@ public class Warpings {
         TetraHedron, 
         Smoth,
         WarpBlock,
+        SmothWarpBlock,
     }
 }

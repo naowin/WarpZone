@@ -10,6 +10,7 @@ public class Warp : MonoBehaviour {
 
     public float minCurveRadius, maxCurveRadius;
     public int minCurveSegmentCount, maxCurveSegmentCount;
+    public WarpstoneGenerator[] warpstones;
 
     private float curveRadius;
     private int curveSegmentCount;
@@ -45,6 +46,13 @@ public class Warp : MonoBehaviour {
         SetTriangles();
         mesh.RecalculateNormals();
     }
+
+    public void GenerateVoidStone(int gameMode)
+    {
+        WarpstoneGenerator wsGen = warpstones[gameMode];
+        wsGen.GenerateWarpstones(this);
+    }
+
 
     private void SetTriangles () 
     {

@@ -6,9 +6,9 @@ public class GameMenu : MonoBehaviour {
 
     public Warper warper;
 
-    public void StartGame()
+    public void StartGame(int gameMode)
     {
-        warper.StartGame();
+        warper.StartGame(gameMode);
         gameObject.SetActive(false);
     }
 
