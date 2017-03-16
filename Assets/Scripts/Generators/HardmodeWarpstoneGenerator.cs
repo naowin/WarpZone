@@ -6,15 +6,17 @@ public class HardmodeWarpstoneGenerator : WarpstoneGenerator {
 
     public override void GenerateWarpstones(Warp warp)
     {
+        
         int direction = Random.value < 0.5f ? 1 : -1;
         int startIndex = Random.Range(0, warp.warpSegmentCount);
+        WarpSettings.WarpStoneMode spiralMode = Random.Range(0, 2) == 0 ? WarpSettings.WarpStoneMode.TetraHedron : WarpSettings.WarpStoneMode.WarpBlock;
 
         for(int i = 0 ; i < warp.CurveSegmentCount; i+=2)
         {
             int warpStoneFactor = Random.Range(1, 2);
 
             WarpStone wStone = Instantiate<WarpStone>(warpStonePrefab);
-            wStone.warpings = new Warpings(
+            wStone.warpSettings = new WarpSettings(
                 startIndex, 
                 i,
                 warp.warpRadius, 
@@ -24,7 +26,7 @@ public class HardmodeWarpstoneGenerator : WarpstoneGenerator {
                 warp.CurveSegmentCount,
                 warp.RelativeRotation,
                 warpStoneFactor,
-                Warpings.WarpStoneMode.WarpBlock,
+                spiralMode,
                 false);
             wStone.transform.SetParent(warp.transform, false);
             wStone.Generate();
@@ -34,7 +36,7 @@ public class HardmodeWarpstoneGenerator : WarpstoneGenerator {
             {
                 int nstartIndex = Random.Range(0, warp.warpSegmentCount);
                 wStone = Instantiate<WarpStone>(warpStonePrefab);
-                wStone.warpings = new Warpings(
+                wStone.warpSettings = new WarpSettings(
                     nstartIndex, 
                     i,
                     warp.warpRadius, 
@@ -44,7 +46,7 @@ public class HardmodeWarpstoneGenerator : WarpstoneGenerator {
                     warp.CurveSegmentCount,
                     warp.RelativeRotation,
                     1,
-                    Warpings.WarpStoneMode.TetraHedron,
+                    WarpSettings.WarpStoneMode.TetraHedron,
                     false);
                 wStone.transform.SetParent(warp.transform, false);
                 wStone.Generate();

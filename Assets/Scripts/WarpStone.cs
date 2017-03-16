@@ -10,8 +10,8 @@ public class WarpStone : MonoBehaviour {
     private HardStone hardStone = new HardStone();
     private SmothStone smothStone = new SmothStone();
     private BlockStone blockStone = new BlockStone();
-    private BlockWarpStone smothBlockStone = new BlockWarpStone();
-    public Warpings warpings { get; set;}
+    private HardBlockStone hardBlockStone = new HardBlockStone();
+    public WarpSettings warpSettings { get; set;}
 
     void Awake() 
     {
@@ -23,26 +23,26 @@ public class WarpStone : MonoBehaviour {
     {        
         mesh.Clear();
         // depending on mode
-        switch(warpings.mode) {
-            case Warpings.WarpStoneMode.TetraHedron:
-                this.hardStone.warpings = warpings;
+        switch(warpSettings.mode) {
+            case WarpSettings.WarpStoneMode.TetraHedron:
+                this.hardStone.warpSettings = warpSettings;
                 this.mesh.name = "WarpStone";
                 this.mesh = this.hardStone.Create(mesh);
                 break;
-            case Warpings.WarpStoneMode.Smoth:
-                this.smothStone.warpings = warpings;
+            case WarpSettings.WarpStoneMode.Smoth:
+                this.smothStone.warpSettings = warpSettings;
                 this.mesh.name = "SmoothWarpStone";
                 this.mesh = this.smothStone.Create(mesh);
                 break;
-            case Warpings.WarpStoneMode.WarpBlock:
-                this.blockStone.warpings = warpings;
+            case WarpSettings.WarpStoneMode.SmothWarpBlock:
+                this.blockStone.warpSettings = warpSettings;
                 this.mesh.name = "WarpBlock";
                 this.mesh = this.blockStone.Create(mesh);
                 break;
-            case Warpings.WarpStoneMode.SmothWarpBlock:
-                this.smothBlockStone.warpings = warpings;
+            case WarpSettings.WarpStoneMode.WarpBlock:
+                this.hardBlockStone .warpSettings = warpSettings;
                 this.mesh.name = "SmoothWarpBlock";
-                this.mesh = this.smothBlockStone.Create(mesh);
+                this.mesh = this.hardBlockStone .Create(mesh);
                 break;
         }
 

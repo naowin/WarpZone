@@ -49,8 +49,11 @@ public class Warp : MonoBehaviour {
 
     public void GenerateVoidStone(int gameMode)
     {
-        WarpstoneGenerator wsGen = warpstones[gameMode];
-        wsGen.GenerateWarpstones(this);
+        if(gameMode > 0)
+        {
+            WarpstoneGenerator wsGen = warpstones[gameMode];
+            wsGen.GenerateWarpstones(this);
+        }
     }
 
 

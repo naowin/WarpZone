@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BlockStone {
 
-    public Warpings warpings { get; set;}
+    public WarpSettings warpSettings { get; set;}
 
     private Mesh mesh;
     private Vector3[] vertices;
@@ -13,9 +13,9 @@ public class BlockStone {
 
     public Mesh Create(Mesh mesh){
         this.mesh = mesh;
-        this.baseStone.warpings = warpings;
+        this.baseStone.warpSettings = warpSettings;
         this.mesh.vertices = SetVertices();
-        if(warpings.useUvs)
+        if(warpSettings.useUvs)
         {
             this.mesh.uv = SetBlockUvs(mesh);
         }
@@ -26,48 +26,48 @@ public class BlockStone {
 
     public Vector3[] SetVertices()
     {
-        vertices = new Vector3[(warpings.warpStoneFactor * 12) + 12];
-        float vStep = (2f * Mathf.PI) / warpings.warpSegmentCount;
-        float uStep = warpings.ringDistance / warpings.curveSegmentCount; 
-        int startIndex = warpings.startIndex;
-        int endIndex = warpings.startIndex + (warpings.warpSegmentCount / 2);
-        if(endIndex > warpings.warpSegmentCount)
+        vertices = new Vector3[(warpSettings.warpStoneFactor * 12) + 12];
+        float vStep = (2f * Mathf.PI) / warpSettings.warpSegmentCount;
+        float uStep = warpSettings.ringDistance / warpSettings.curveSegmentCount; 
+        int startIndex = warpSettings.startIndex;
+        int endIndex = warpSettings.startIndex + (warpSettings.warpSegmentCount / 2);
+        if(endIndex > warpSettings.warpSegmentCount)
         {
-            startIndex -= (warpings.warpSegmentCount / 2);
-            endIndex -= (warpings.warpSegmentCount / 2);                
+            startIndex -= (warpSettings.warpSegmentCount / 2);
+            endIndex -= (warpSettings.warpSegmentCount / 2);                
         }
 
-        endIndex += warpings.warpStoneFactor;
+        endIndex += warpSettings.warpStoneFactor;
             
 
-        Vector3 verticeA = this.baseStone.GetPointOnTorus(warpings.depthIndex * uStep, startIndex * vStep);
-        Vector3 verticeB = this.baseStone.GetPointOnTorus(warpings.depthIndex * uStep, endIndex * vStep);
+        Vector3 verticeA = this.baseStone.GetPointOnTorus(warpSettings.depthIndex * uStep, startIndex * vStep);
+        Vector3 verticeB = this.baseStone.GetPointOnTorus(warpSettings.depthIndex * uStep, endIndex * vStep);
 
-        Vector3 verticeC = this.baseStone.GetPointOnTorus((warpings.depthIndex + warpings.depthFactor) * uStep, startIndex * vStep);
-        Vector3 verticeD = this.baseStone.GetPointOnTorus((warpings.depthIndex + warpings.depthFactor) * uStep, endIndex * vStep);
+        Vector3 verticeC = this.baseStone.GetPointOnTorus((warpSettings.depthIndex + warpSettings.depthFactor) * uStep, startIndex * vStep);
+        Vector3 verticeD = this.baseStone.GetPointOnTorus((warpSettings.depthIndex + warpSettings.depthFactor) * uStep, endIndex * vStep);
 
         int verticeIndex = 0;
-        for(int sideStep = 1; sideStep <= warpings.warpStoneFactor; sideStep++)
+        for(int sideStep = 1; sideStep <= warpSettings.warpStoneFactor; sideStep++)
         {
             // front top triangle
             vertices[verticeIndex] = verticeA;
-            vertices[verticeIndex + 1] = verticeA = this.baseStone.GetPointOnTorus(warpings.depthIndex * uStep, (startIndex + sideStep) * vStep);
+            vertices[verticeIndex + 1] = verticeA = this.baseStone.GetPointOnTorus(warpSettings.depthIndex * uStep, (startIndex + sideStep) * vStep);
             vertices[verticeIndex + 2] = verticeB;
 
             // front bottom triangle
             vertices[verticeIndex + 3] = verticeB;
             vertices[verticeIndex + 4] = verticeA;
-            vertices[verticeIndex + 5] = verticeB = this.baseStone.GetPointOnTorus(warpings.depthIndex * uStep, (endIndex - sideStep) * vStep);
+            vertices[verticeIndex + 5] = verticeB = this.baseStone.GetPointOnTorus(warpSettings.depthIndex * uStep, (endIndex - sideStep) * vStep);
 
             // back top triangle
             vertices[verticeIndex + 6] = verticeC;
-            vertices[verticeIndex + 7] = verticeC = this.baseStone.GetPointOnTorus((warpings.depthIndex + warpings.depthFactor) * uStep, (startIndex + sideStep) * vStep);;
+            vertices[verticeIndex + 7] = verticeC = this.baseStone.GetPointOnTorus((warpSettings.depthIndex + warpSettings.depthFactor) * uStep, (startIndex + sideStep) * vStep);;
             vertices[verticeIndex + 8] = verticeD;
 
             // back bottom triangle
             vertices[verticeIndex + 9] = verticeD;
             vertices[verticeIndex + 10] = verticeC;
-            vertices[verticeIndex + 11] = verticeD = this.baseStone.GetPointOnTorus((warpings.depthIndex + warpings.depthFactor) * uStep, (endIndex - sideStep) * vStep);
+            vertices[verticeIndex + 11] = verticeD = this.baseStone.GetPointOnTorus((warpSettings.depthIndex + warpSettings.depthFactor) * uStep, (endIndex - sideStep) * vStep);
             verticeIndex += 12;
         }
             
@@ -104,10 +104,10 @@ public class BlockStone {
 
     private int[] SetTriangles() 
     {
-        triangles = new int[(warpings.warpStoneFactor * 12) + 12];
+        triangles = new int[(warpSettings.warpStoneFactor * 12) + 12];
 
         int verticeIndex = 0;
-        for(int sideStep = 0; sideStep < warpings.warpStoneFactor; sideStep++)
+        for(int sideStep = 0; sideStep < warpSettings.warpStoneFactor; sideStep++)
         {
             // front top triangle
             triangles[verticeIndex] = verticeIndex + 1;

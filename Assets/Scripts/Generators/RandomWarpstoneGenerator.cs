@@ -3,14 +3,14 @@
 public class RandomWarpstoneGenerator : WarpstoneGenerator {
 
     public WarpStone warpStonePrefab;
-    public Warpings.WarpStoneMode[] warpstone;
+    public WarpSettings.WarpStoneMode[] warpstone;
    
     public override void GenerateWarpstones(Warp warp)
     {
         for(int i = 0; i < warp.CurveSegmentCount; i++)
         {
             int[] indexes = new int[warp.warpSegmentCount];
-            int numberOfWarpstones = 1; // Random.Range(1, 4);
+            int numberOfWarpstones = Random.Range(1, 4);
             int depthFactor = 0;
             for(int n = 0; n < numberOfWarpstones; n++)
             {
@@ -28,7 +28,7 @@ public class RandomWarpstoneGenerator : WarpstoneGenerator {
                 }
 
                 WarpStone wStone = Instantiate<WarpStone>(warpStonePrefab);
-                wStone.warpings = new Warpings(
+                wStone.warpSettings = new WarpSettings(
                     startIndex, 
                     i,
                     warp.warpRadius, 
@@ -38,7 +38,7 @@ public class RandomWarpstoneGenerator : WarpstoneGenerator {
                     warp.CurveSegmentCount,
                     warp.RelativeRotation,
                     warpStoneFactor,
-                    Warpings.WarpStoneMode.SmothWarpBlock,
+                    warpstone[Random.Range(0, 6)],
                     false);
                 wStone.transform.SetParent(warp.transform, false);
                 wStone.Generate();

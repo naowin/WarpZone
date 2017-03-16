@@ -14,7 +14,7 @@ public class BlockStoneGenerator : WarpstoneGenerator {
             int warpStoneFactor = Random.Range(1, 2);
 
             WarpStone wStone = Instantiate<WarpStone>(BlockStonePrefab);
-            wStone.warpings = new Warpings(
+            wStone.warpSettings = new WarpSettings(
                 startIndex, 
                 i,
                 warp.warpRadius, 
@@ -24,7 +24,7 @@ public class BlockStoneGenerator : WarpstoneGenerator {
                 warp.CurveSegmentCount,
                 warp.RelativeRotation,
                 warpStoneFactor,
-                Warpings.WarpStoneMode.WarpBlock,
+                WarpSettings.WarpStoneMode.WarpBlock,
                 false);
             wStone.transform.SetParent(warp.transform, false);
             wStone.Generate();
