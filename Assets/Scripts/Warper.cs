@@ -9,6 +9,9 @@ public class Warper : MonoBehaviour {
     public float rotationVelocity;
     public GameMenu gameMenu;
 
+    public GameObject Warpel;
+    public GameObject WarpTrail;
+
     private Warp currentSection;
     private float spaceRotation;
     private float sparkRotation;

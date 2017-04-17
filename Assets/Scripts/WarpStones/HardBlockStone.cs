@@ -2,18 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HardBlockStone {
+public class HardBlockWarpStone {
 
     public WarpSettings warpSettings { get; set;}
 
     private Mesh mesh;
     private Vector3[] vertices;
     private int[] triangles;
-    private BaseStone baseStone = new BaseStone();
+    private BaseWarpStone baseWarpStone = new BaseWarpStone();
 
     public Mesh Create(Mesh mesh){
         this.mesh = mesh;
-        this.baseStone.warpSettings = warpSettings;
+        this.baseWarpStone.warpSettings = warpSettings;
         this.mesh.vertices = SetVertices();
         if(warpSettings.useUvs)
         {
@@ -38,15 +38,15 @@ public class HardBlockStone {
             endIndex -= (warpSettings.warpSegmentCount / 2);                
         }
 
-        point[0] = this.baseStone.GetPointOnTorus(warpSettings.depthIndex * uStep, startIndex * vStep);
-        point[1] = this.baseStone.GetPointOnTorus(warpSettings.depthIndex * uStep, (startIndex + warpSettings.warpStoneFactor) * vStep);
-        point[2] = this.baseStone.GetPointOnTorus((warpSettings.depthIndex + warpSettings.depthFactor) * uStep, (startIndex + warpSettings.warpStoneFactor) * vStep);
-        point[3] = this.baseStone.GetPointOnTorus((warpSettings.depthIndex + warpSettings.depthFactor) * uStep, startIndex * vStep);
+        point[0] = this.baseWarpStone.GetPointOnTorus(warpSettings.depthIndex * uStep, startIndex * vStep);
+        point[1] = this.baseWarpStone.GetPointOnTorus(warpSettings.depthIndex * uStep, (startIndex + warpSettings.warpStoneFactor) * vStep);
+        point[2] = this.baseWarpStone.GetPointOnTorus((warpSettings.depthIndex + warpSettings.depthFactor) * uStep, (startIndex + warpSettings.warpStoneFactor) * vStep);
+        point[3] = this.baseWarpStone.GetPointOnTorus((warpSettings.depthIndex + warpSettings.depthFactor) * uStep, startIndex * vStep);
 
-        point[4] = this.baseStone.GetPointOnTorus(warpSettings.depthIndex * uStep, endIndex * vStep);
-        point[5] = this.baseStone.GetPointOnTorus((warpSettings.depthIndex + warpSettings.depthFactor) * uStep, endIndex * vStep);
-        point[6] = this.baseStone.GetPointOnTorus((warpSettings.depthIndex + warpSettings.depthFactor) * uStep, (endIndex + warpSettings.warpStoneFactor) * vStep);
-        point[7] = this.baseStone.GetPointOnTorus(warpSettings.depthIndex * uStep, (endIndex + warpSettings.warpStoneFactor) * vStep);
+        point[4] = this.baseWarpStone.GetPointOnTorus(warpSettings.depthIndex * uStep, endIndex * vStep);
+        point[5] = this.baseWarpStone.GetPointOnTorus((warpSettings.depthIndex + warpSettings.depthFactor) * uStep, endIndex * vStep);
+        point[6] = this.baseWarpStone.GetPointOnTorus((warpSettings.depthIndex + warpSettings.depthFactor) * uStep, (endIndex + warpSettings.warpStoneFactor) * vStep);
+        point[7] = this.baseWarpStone.GetPointOnTorus(warpSettings.depthIndex * uStep, (endIndex + warpSettings.warpStoneFactor) * vStep);
 
 
         int verticeIndex = 0;

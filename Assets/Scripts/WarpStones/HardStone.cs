@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HardStone{
+public class HardWarpStone{
 
     public WarpSettings warpSettings { get; set;}
    
@@ -10,16 +10,16 @@ public class HardStone{
     private Mesh mesh;
     private Vector3[] vertices;
     private int[] triangles;
-    private BaseStone baseStone = new BaseStone();
+    private BaseWarpStone baseWarpStone = new BaseWarpStone();
 
     public Mesh Create(Mesh mesh)
     {
         this.mesh = mesh;
-        this.baseStone.warpSettings = warpSettings;
+        this.baseWarpStone.warpSettings = warpSettings;
         this.mesh.vertices = SetVertices();
         if(warpSettings.useUvs)
         {
-            this.mesh.uv = this.baseStone.SetTriangleUvs(mesh);
+            this.mesh.uv = this.baseWarpStone.SetTriangleUvs(mesh);
         }
 
         this.mesh.triangles = SetTriangles();
@@ -32,11 +32,11 @@ public class HardStone{
         Vector3[] point = new Vector3[5];
         float vStep = (2f * Mathf.PI) / warpSettings.warpSegmentCount;
         float uStep = warpSettings.ringDistance / warpSettings.curveSegmentCount; 
-        point[0] = this.baseStone.GetPointOnTorus(warpSettings.depthIndex * uStep, warpSettings.startIndex * vStep);
-        point[1] = this.baseStone.GetPointOnTorus((warpSettings.depthIndex + warpSettings.depthFactor) * uStep, warpSettings.startIndex * vStep);
-        point[2] = this.baseStone.GetPointOnTorus(warpSettings.depthIndex * uStep, (warpSettings.startIndex + warpSettings.warpStoneFactor) * vStep);
-        point[3] = this.baseStone.GetPointOnTorus((warpSettings.depthIndex + warpSettings.depthFactor) * uStep, (warpSettings.startIndex + warpSettings.warpStoneFactor) * vStep);
-        point[4] = this.baseStone.CreateTriangleEndpoint((warpSettings.depthIndex) * (uStep / 2), (warpSettings.startIndex + warpSettings.warpStoneFactor) * (vStep / 2)); 
+        point[0] = this.baseWarpStone.GetPointOnTorus(warpSettings.depthIndex * uStep, warpSettings.startIndex * vStep);
+        point[1] = this.baseWarpStone.GetPointOnTorus((warpSettings.depthIndex + warpSettings.depthFactor) * uStep, warpSettings.startIndex * vStep);
+        point[2] = this.baseWarpStone.GetPointOnTorus(warpSettings.depthIndex * uStep, (warpSettings.startIndex + warpSettings.warpStoneFactor) * vStep);
+        point[3] = this.baseWarpStone.GetPointOnTorus((warpSettings.depthIndex + warpSettings.depthFactor) * uStep, (warpSettings.startIndex + warpSettings.warpStoneFactor) * vStep);
+        point[4] = this.baseWarpStone.CreateTriangleEndpoint((warpSettings.depthIndex) * (uStep / 2), (warpSettings.startIndex + warpSettings.warpStoneFactor) * (vStep / 2)); 
 
         // first side
         vertices[0] = point[0];

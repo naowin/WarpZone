@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BaseStone {
+public class BaseWarpStone {
 
     public WarpSettings warpSettings { get; set;}
 

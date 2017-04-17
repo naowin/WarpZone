@@ -15,7 +15,8 @@ public class WarpSettings {
     public int warpStoneFactor { get; set; }
     public WarpStoneMode mode { get; set; }
     public bool useUvs { get; set; }
-    // how deep the warpstone will be...
+
+    // how deep will the warpstone be...
     public int depthFactor = 1; // warpings.warpStoneFactor < 4 ? 1 : 2;
 
     public WarpSettings(int startIndex, int startDepth, float warpRadius, int warpSegmentCount, float ringDistance, float curveRadius, int curveSegmentCount, float relativeRotation, int warpStoneFactor, WarpStoneMode mode, bool useUvs)

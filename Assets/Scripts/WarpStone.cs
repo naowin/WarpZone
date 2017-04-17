@@ -7,10 +7,10 @@ public class WarpStone : MonoBehaviour {
     private Mesh mesh;
     private Vector3[] vertices;
     private int[] triangles;
-    private HardStone hardStone = new HardStone();
-    private SmothStone smothStone = new SmothStone();
-    private BlockStone blockStone = new BlockStone();
-    private HardBlockStone hardBlockStone = new HardBlockStone();
+    private HardWarpStone hardStone = new HardWarpStone();
+    private SmothWarpStone smothStone = new SmothWarpStone();
+    private BlockWarpStone blockStone = new BlockWarpStone();
+    private HardBlockWarpStone hardBlockStone = new HardBlockWarpStone();
     public WarpSettings warpSettings { get; set;}
 
     void Awake() 
