@@ -5,7 +5,7 @@ using UnityEngine;
 public class Warper : MonoBehaviour {
 
     public WarpSystem ws;
-    public float velocity;
+    public float velocity;   
     public float rotationVelocity;
     public GameMenu gameMenu;
 
