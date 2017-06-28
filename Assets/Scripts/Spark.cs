@@ -24,12 +24,15 @@ public class Spark : MonoBehaviour {
 
     private void OnTriggerEnter(Collider collider)
     {
-        if(deathCountdown < 0f)
+        if (!warper.faded)
         {
-            warpelEm.enabled = false;
-            warpTrailEm.enabled = false;
-            this.boomBloom.Emit(this.boomBloom.main.maxParticles);
-            deathCountdown = this.boomBloom.main.startLifetime.constant;
+            if (deathCountdown < 0f)
+            {
+                warpelEm.enabled = false;
+                warpTrailEm.enabled = false;
+                this.boomBloom.Emit(this.boomBloom.main.maxParticles);
+                deathCountdown = this.boomBloom.main.startLifetime.constant;
+            }
         }
     }
 
@@ -42,7 +45,11 @@ public class Spark : MonoBehaviour {
 	void Update () {
         if(deathCountdown >= 0f)
         {
-            deathCountdown -= Time.deltaTime;
+            if (!warper.faded)
+            {
+                deathCountdown -= Time.deltaTime;
+            }
+
             if(deathCountdown <= 0f) 
             {
                 deathCountdown = -1f;

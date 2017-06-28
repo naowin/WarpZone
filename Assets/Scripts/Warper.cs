@@ -11,6 +11,7 @@ public class Warper : MonoBehaviour {
 
     public GameObject Warpel;
     public GameObject WarpTrail;
+    public GameObject BoomBloom;
 
     private Warp currentSection;
     private float spaceRotation;
@@ -21,6 +22,8 @@ public class Warper : MonoBehaviour {
     private float deltaToRotation;
     private float systemRotation;
     private float distanceTraveled;
+
+    public bool faded = false;
 
     private void Awake()
     {
@@ -38,6 +41,7 @@ public class Warper : MonoBehaviour {
         ws.GameMode = gameMode;
         currentSection = ws.SetupFirstWarp();
         SetupCurrentWarp();
+        faded = false;
         gameObject.SetActive(true);
     }
 
@@ -92,8 +96,13 @@ public class Warper : MonoBehaviour {
 
     public void Fade()
     {
-        gameObject.SetActive(false);
-        gameMenu.GameOver();
+        if(!faded)
+        {
+            faded = true;
+            Warpel.SetActive(false);
+            WarpTrail.SetActive(false);
+            gameMenu.GameOver();
+        }
     }
 
     // {}

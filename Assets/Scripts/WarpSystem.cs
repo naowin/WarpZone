@@ -6,7 +6,9 @@ public class WarpSystem : MonoBehaviour {
 
     public Warp warpPrefab;
     public WarpStone warpStonePrefab;
+    public Warper warper;
     public int warpCount;
+
 
     private Warp[] warps;
 
@@ -33,7 +35,7 @@ public class WarpSystem : MonoBehaviour {
                 warp.AlignWith(warps[i - 1]);
             }
 
-            if(i > 1)
+            if(i > 1 && !warper.faded)
             {
                 warp.GenerateVoidStone(GameMode);
             }
@@ -49,7 +51,11 @@ public class WarpSystem : MonoBehaviour {
         WarpShift();
         AlignNextWarpWithOrigin();
         warps[warps.Length - 1].Generate();
-        warps[warps.Length - 1].GenerateVoidStone(GameMode);
+        if (!warper.faded)
+        {
+            warps[warps.Length - 1].GenerateVoidStone(GameMode);
+        }
+        
         warps[warps.Length - 1].AlignWith(warps[warps.Length - 2]);
         transform.localPosition = new Vector3(0f, -warps[1].CurveRadius);
         return warps[1];

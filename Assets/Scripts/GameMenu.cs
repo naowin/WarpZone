@@ -16,13 +16,19 @@ public class GameMenu : MonoBehaviour {
 
     public void GameOver()
     {
-        this.ChangeMenu(0);
+        this.ChangeMenu(1);
         gameObject.SetActive(true);
     }
 
     public void QuitGame()
     {
-
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#elif UNITY_WEBPLAYER
+         Application.OpenURL(webplayerQuitURL);
+#else
+         Application.Quit();
+#endif
     }
 
     public void ChangeMenu(int gameMenu)
