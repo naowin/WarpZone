@@ -34,6 +34,7 @@ public class Warper : MonoBehaviour {
 
     public void StartGame(int gameMode)
     {
+        Debug.Log("Warper starting gaem");
         sparkRotation = 0f;
         spaceRotation = 0f;
         systemRotation = 0f;

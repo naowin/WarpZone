@@ -23,6 +23,11 @@ public class WarpSystem : MonoBehaviour {
         }
     }
 
+    public void UpdateWarpPrefab()
+    {
+        Debug.Log(warpPrefab.warpRadius);
+    }
+
     public int GameMode { get; set; }
 
     public Warp SetupFirstWarp()
@@ -50,6 +55,7 @@ public class WarpSystem : MonoBehaviour {
     {
         WarpShift();
         AlignNextWarpWithOrigin();
+        SyncWarpWithPrefab(warps.Length - 1);
         warps[warps.Length - 1].Generate();
         if (!warper.faded)
         {
@@ -59,6 +65,17 @@ public class WarpSystem : MonoBehaviour {
         warps[warps.Length - 1].AlignWith(warps[warps.Length - 2]);
         transform.localPosition = new Vector3(0f, -warps[1].CurveRadius);
         return warps[1];
+    }
+
+    private void SyncWarpWithPrefab(int warpIndex)
+    {
+        warps[warpIndex].warpRadius = warpPrefab.warpRadius;
+        warps[warpIndex].warpSegmentCount = warpPrefab.warpSegmentCount;
+        warps[warpIndex].ringDistance = warpPrefab.ringDistance;
+        warps[warpIndex].minCurveRadius = warpPrefab.minCurveRadius;
+        warps[warpIndex].maxCurveRadius = warpPrefab.maxCurveRadius;
+        warps[warpIndex].minCurveSegmentCount = warpPrefab.minCurveSegmentCount;
+        warps[warpIndex].maxCurveSegmentCount = warpPrefab.maxCurveSegmentCount;
     }
 
     private void AlignNextWarpWithOrigin()
