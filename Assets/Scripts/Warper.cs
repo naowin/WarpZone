@@ -24,8 +24,7 @@ public class Warper : MonoBehaviour {
     private float distanceTraveled;
 
     public bool faded = false;
-    private bool left;
-    private bool right;
+    private int _gameMode = 0;
 
     private void Awake()
     {
@@ -36,7 +35,7 @@ public class Warper : MonoBehaviour {
 
     public void StartGame(int gameMode)
     {
-        Debug.Log("Warper starting gaem");
+        _gameMode = gameMode;
         sparkRotation = 0f;
         spaceRotation = 0f;
         systemRotation = 0f;
@@ -102,6 +101,7 @@ public class Warper : MonoBehaviour {
         if(!faded)
         {
             faded = true;
+            _gameMode = 0;
             Warpel.SetActive(false);
             WarpTrail.SetActive(false);
             gameMenu.GameOver();
@@ -113,16 +113,18 @@ public class Warper : MonoBehaviour {
         var LeftRight = 0;
         var screenWidth = Screen.width / 2;
 #if UNITY_EDITOR
-        /*
-        if (Input.GetMouseButton(1))
+        if (_gameMode > 0)
         {
+            if (Input.GetMouseButton(1))
+            {
                 return 1;
+            }
+            else if (Input.GetMouseButton(0))
+            {
+                return -1;
+            }
         }
-        else if (Input.GetMouseButton(0))
-        {
-            return -1;
-        }
-        */
+
         return Input.GetAxis("Horizontal");
 #endif
 
