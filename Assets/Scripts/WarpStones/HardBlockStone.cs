@@ -99,14 +99,14 @@ public class HardBlockWarpStone {
             triangles[triangleIndex + 5] = triangleIndex + 5;
             triangleIndex += 6;
         }
+        
 
         triangles[triangleIndex] = vertices.Length - 6;
         triangles[triangleIndex + 1] = vertices.Length - 5;
         triangles[triangleIndex + 2] = vertices.Length - 4;
         triangles[triangleIndex + 3] = vertices.Length - 3;
-        triangles[triangleIndex + 4] = vertices.Length - 2;
-        triangles[triangleIndex + 5] = vertices.Length - 1;
-
+        triangles[triangleIndex + 4] = vertices.Length - 1;
+        triangles[triangleIndex + 5] = vertices.Length - 2;
         return triangles;
     }
 

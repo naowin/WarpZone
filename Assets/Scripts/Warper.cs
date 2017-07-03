@@ -24,6 +24,8 @@ public class Warper : MonoBehaviour {
     private float distanceTraveled;
 
     public bool faded = false;
+    private bool left;
+    private bool right;
 
     private void Awake()
     {
@@ -82,7 +84,7 @@ public class Warper : MonoBehaviour {
 
     private void UpdateSparkRotation()
     {
-        sparkRotation += rotationVelocity * Time.deltaTime * Input.GetAxis("Horizontal");
+        sparkRotation += rotationVelocity * Time.deltaTime * GetDirection();
         if(sparkRotation < 0f)
         {
             sparkRotation += 360f;
@@ -106,5 +108,36 @@ public class Warper : MonoBehaviour {
         }
     }
 
-    // {}
+    private float GetDirection()
+    {
+        var LeftRight = 0;
+        var screenWidth = Screen.width / 2;
+#if UNITY_EDITOR
+        /*
+        if (Input.GetMouseButton(1))
+        {
+                return 1;
+        }
+        else if (Input.GetMouseButton(0))
+        {
+            return -1;
+        }
+        */
+        return Input.GetAxis("Horizontal");
+#endif
+
+#if UNITY_ANDROID
+            if (Input.touchCount > 0)
+        {
+            // touch x position is bigger than half of the screen, moving right
+            if (Input.GetTouch(0).position.x > screenWidth)
+                LeftRight = 1;
+            // touch x position is smaller than half of the screen, moving left
+            else if (Input.GetTouch(0).position.x < screenWidth)
+                LeftRight = -1;
+        }
+#endif
+
+        return LeftRight;
+    }
 }
