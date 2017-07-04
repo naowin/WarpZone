@@ -5,8 +5,9 @@ public class GameSettings : MonoBehaviour {
 
     public Warp warp;
     public Warper warper;
+    public Light WarpLight;
 
-    // Text Objects
+    // WarpSettings Text Objects
     public Text WarpVelocityText;
     public Text RotationVelocityText;
     public Text WarpRadiusText;
@@ -17,6 +18,31 @@ public class GameSettings : MonoBehaviour {
     public Text MinimumCurveSegmentsText;
     public Text MaximumCurveSegmentsText;
 
+    // WarpSettings Sliders
+    public Slider WarpVelocitySlider;
+    public Slider RotationVelocitySlider;
+    public Slider WarpRadiusSlider;
+    public Slider WarpSegmentCountSlider;
+    public Slider RingDistanceSlider;
+    public Slider InnerCurveRadiusSlider;
+    public Slider OuterCurveRadiusSlider;
+    public Slider MinimumCurveSegmentSlider;
+    public Slider MaximumCurveSegmentSlider;
+    
+    // Color and Lightning Text Objects
+    public Text RedColorText;
+    public Text GreenColorText;
+    public Text BlueColorText;
+    public Text LightningRadiusText;
+    public Text ColorAndLightningIntensityText;
+
+    // Color and Lightning Sliders
+    public Slider RedColorSlider;
+    public Slider GreenColorSlider;
+    public Slider BlueColorSlider;
+    public Slider LightRadiusSlider;
+    public Slider ColorAndLightningIntensitySlider;
+    
     public void WarpVelocityChanged(float newValue)
     {
         WarpVelocityText.text = string.Format("Warp Velocity ({0})", Mathf.Round(newValue));
@@ -71,12 +97,48 @@ public class GameSettings : MonoBehaviour {
         warp.maxCurveSegmentCount = Mathf.RoundToInt(newValue);
     }
 
-    public void ResetSettings()
+    public void RedColorChanged(float newValue)
     {
-        // Spark
+        RedColorText.text = string.Format("Red ({0})", newValue);
+        var newColor = new Color32((byte)newValue, (byte)GreenColorSlider.value, (byte)BlueColorSlider.value, 1);
+        warp.gameObject.GetComponent<Renderer>().sharedMaterial.color = newColor;
+    }
+    public void GreenColorChanged(float newValue)
+    {
+        GreenColorText.text = string.Format("Red ({0})", newValue);
+        var newColor = new Color32((byte)RedColorSlider.value, (byte)(byte)newValue, (byte)BlueColorSlider.value, 1);
+        warp.gameObject.GetComponent<Renderer>().sharedMaterial.color = newColor;
+    }
+    public void BlueColorChanged(float newValue)
+    {
+        BlueColorText.text = string.Format("Red ({0})", newValue);
+        var newColor = new Color32((byte)RedColorSlider.value, (byte)GreenColorSlider.value, (byte)newValue, 1);
+        warp.gameObject.GetComponent<Renderer>().sharedMaterial.color = newColor;
+    }
+
+    public void LightRadiusChanged(float newValue)
+    {
+        LightningRadiusText.text = string.Format("Light Radius ({0})", newValue);
+        WarpLight.range = newValue;
+    }
+
+    public void ColorAndLightningIntensityChanged(float newValue)
+    {
+        ColorAndLightningIntensityText.text = string.Format("Color / Lightning Intensity ({0})", newValue);
+        WarpLight.intensity = newValue;
+    }
+
+    public void ResetWarpSettings()
+    {
+        // Reset Spark Text
         WarpVelocityChanged(6);
         WarpRadiusChanged(180);
-        // World
+
+        // Reset Spark Sliders
+        WarpVelocitySlider.value = 6;
+        WarpRadiusSlider.value = 180;
+
+        // Reset WarpSetting Text
         WarpRadiusChanged(1);
         WarpSegmentCountChanged(24);
         RingDistanceChanged(0.77f);
@@ -84,5 +146,35 @@ public class GameSettings : MonoBehaviour {
         OuterCurveRadiusChagned(20);
         MinimumCurveSegmentsCount(20);
         MaximumCurveSegmentsCount(20);
+
+        // Reset WarpSetting Sliders
+        WarpRadiusSlider.value = 1;
+        WarpSegmentCountSlider.value = 24;
+        RingDistanceSlider.value = 0.77f;
+        InnerCurveRadiusSlider.value = 4;
+        OuterCurveRadiusSlider.value = 20;
+        MinimumCurveSegmentSlider.value = 20;
+        MaximumCurveSegmentSlider.value = 20;
+    }
+
+    public void ResetColorAndLightning()
+    {
+        // Reset Colors Texts
+        RedColorChanged(255);
+        GreenColorChanged(0);
+        BlueColorChanged(255);
+
+        // Reset Color Sliders
+        RedColorSlider.value = 255;
+        GreenColorSlider.value = 0;
+        BlueColorSlider.value = 255;
+
+        // Reset Lightning Text
+        LightRadiusChanged(6);
+        ColorAndLightningIntensityChanged(3);
+
+        // Reset Lightning Sliders
+        LightRadiusSlider.value = 6;
+        ColorAndLightningIntensitySlider.value = 3;
     }
 }
