@@ -23,11 +23,6 @@ public class WarpSystem : MonoBehaviour {
         }
     }
 
-    public void UpdateWarpPrefab()
-    {
-        Debug.Log(warpPrefab.warpRadius);
-    }
-
     public int GameMode { get; set; }
 
     public Warp SetupFirstWarp()
