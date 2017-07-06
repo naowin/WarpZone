@@ -11,6 +11,8 @@ public class Warp : MonoBehaviour {
     public float minCurveRadius, maxCurveRadius;
     public int minCurveSegmentCount, maxCurveSegmentCount;
     public WarpstoneGenerator[] warpstones;
+    public int maxNumberOfWarpStones;
+    public int warpStoneDistance;
 
     private float curveRadius;
     private int curveSegmentCount;

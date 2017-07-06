@@ -7,9 +7,7 @@ public class GameSettings : MonoBehaviour {
     public Warper warper;
     public Light WarpLight;
 
-    // WarpSettings Text Objects
-    public Text WarpVelocityText;
-    public Text RotationVelocityText;
+    // WarpZoneSettings Text Objects
     public Text WarpRadiusText;
     public Text WarpSegmentCountText;
     public Text RingDistanceText;
@@ -18,9 +16,7 @@ public class GameSettings : MonoBehaviour {
     public Text MinimumCurveSegmentsText;
     public Text MaximumCurveSegmentsText;
 
-    // WarpSettings Sliders
-    public Slider WarpVelocitySlider;
-    public Slider RotationVelocitySlider;
+    // WarpZoneSettings Sliders
     public Slider WarpRadiusSlider;
     public Slider WarpSegmentCountSlider;
     public Slider RingDistanceSlider;
@@ -28,7 +24,19 @@ public class GameSettings : MonoBehaviour {
     public Slider OuterCurveRadiusSlider;
     public Slider MinimumCurveSegmentSlider;
     public Slider MaximumCurveSegmentSlider;
+
+    // Warp Settings
+    public Text WarpVelocityText;
+    public Text RotationVelocityText;
+    public Text MaximumWarpStonesText;
+    public Text WarpStoneDistanceText;
     
+    // WarpSettings Sliders
+    public Slider WarpVelocitySlider;
+    public Slider RotationVelocitySlider;
+    public Slider MaximumWarpStoneSlider;
+    public Slider WarpStoneDistanceSlider;
+
     // Color and Lightning Text Objects
     public Text RedColorText;
     public Text GreenColorText;
@@ -42,6 +50,9 @@ public class GameSettings : MonoBehaviour {
     public Slider BlueColorSlider;
     public Slider LightRadiusSlider;
     public Slider ColorAndLightningIntensitySlider;
+
+
+
     
     public void WarpVelocityChanged(float newValue)
     {
@@ -128,16 +139,36 @@ public class GameSettings : MonoBehaviour {
         WarpLight.intensity = newValue;
     }
 
+    public void MaximumWarpStonesChanged(float newValue)
+    {
+        MaximumWarpStonesText.text = string.Format("Maximum WarpStones ({0})", newValue);
+        warp.maxNumberOfWarpStones = (int)newValue;
+    }
+
+    public void WarpStoneDistanceChanged(float newValue)
+    {
+        WarpStoneDistanceText.text = string.Format("WarpStone Distance ({0})", newValue);
+        warp.warpStoneDistance = (int)newValue;
+    }
+
     public void ResetWarpSettings()
     {
         // Reset Spark Text
         WarpVelocityChanged(6);
-        WarpRadiusChanged(180);
+        WarpRotationChanged(180);
+        MaximumWarpStonesChanged(4);
+        WarpStoneDistanceChanged(1);
+        
 
         // Reset Spark Sliders
         WarpVelocitySlider.value = 6;
-        WarpRadiusSlider.value = 180;
+        RotationVelocitySlider.value = 180;
+        MaximumWarpStoneSlider.value = 4;
+        WarpStoneDistanceSlider.value = 1;
+    }
 
+    public void ResetWarpZoneSettings()
+    {
         // Reset WarpSetting Text
         WarpRadiusChanged(1);
         WarpSegmentCountChanged(24);

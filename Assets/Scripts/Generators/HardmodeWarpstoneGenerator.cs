@@ -30,8 +30,9 @@ public class HardmodeWarpstoneGenerator : WarpstoneGenerator {
                 false);
             wStone.transform.SetParent(warp.transform, false);
             wStone.Generate();
-
-            int numberOfWarpstones = Random.Range(1, 4);
+                        
+            int numberOfWarpstones = Random.Range(1, warp.maxNumberOfWarpStones);
+      
             for(int n = 0; n < numberOfWarpstones; n++)
             {
                 int nstartIndex = Random.Range(0, warp.warpSegmentCount);

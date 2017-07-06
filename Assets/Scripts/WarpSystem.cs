@@ -71,6 +71,8 @@ public class WarpSystem : MonoBehaviour {
         warps[warpIndex].maxCurveRadius = warpPrefab.maxCurveRadius;
         warps[warpIndex].minCurveSegmentCount = warpPrefab.minCurveSegmentCount;
         warps[warpIndex].maxCurveSegmentCount = warpPrefab.maxCurveSegmentCount;
+        warps[warpIndex].maxNumberOfWarpStones = warpPrefab.maxNumberOfWarpStones;
+        warps[warpIndex].warpStoneDistance = warpPrefab.warpStoneDistance;
     }
 
     private void AlignNextWarpWithOrigin()

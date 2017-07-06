@@ -1,6 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class Warper : MonoBehaviour {
 
@@ -13,6 +12,8 @@ public class Warper : MonoBehaviour {
     public GameObject WarpTrail;
     public GameObject BoomBloom;
 
+    public Text warpDistanceText; 
+
     private Warp currentSection;
     private float spaceRotation;
     private float sparkRotation;
@@ -21,7 +22,7 @@ public class Warper : MonoBehaviour {
 
     private float deltaToRotation;
     private float systemRotation;
-    private float distanceTraveled;
+    private float warpDistance;
 
     public bool faded = false;
     private int _gameMode = 0;
@@ -35,11 +36,16 @@ public class Warper : MonoBehaviour {
 
     public void StartGame(int gameMode)
     {
+        if(gameMode > 0)
+        {
+            warpDistanceText.gameObject.SetActive(true);
+        }
+
         _gameMode = gameMode;
         sparkRotation = 0f;
         spaceRotation = 0f;
         systemRotation = 0f;
-        distanceTraveled = 0f;
+        warpDistance = 0f;
         ws.GameMode = gameMode;
         currentSection = ws.SetupFirstWarp();
         SetupCurrentWarp();
@@ -50,9 +56,13 @@ public class Warper : MonoBehaviour {
     private void Update()
     {
         float delta = velocity * Time.deltaTime;
-        distanceTraveled += delta;
         systemRotation += delta * deltaToRotation;
 
+        if (!faded)
+        {
+            warpDistance += delta;
+        }
+                
         if(systemRotation >= currentSection.CurveAngle)
         {
             delta = (systemRotation - currentSection.CurveAngle) / deltaToRotation;
@@ -63,6 +73,7 @@ public class Warper : MonoBehaviour {
 
         ws.transform.localRotation = Quaternion.Euler(0f, 0f, systemRotation);
         UpdateSparkRotation();
+        warpDistanceText.text = string.Format("{0}", (int)warpDistance);
     }
 
     private void SetupCurrentWarp()
@@ -104,6 +115,7 @@ public class Warper : MonoBehaviour {
             _gameMode = 0;
             Warpel.SetActive(false);
             WarpTrail.SetActive(false);
+            warpDistanceText.gameObject.SetActive(false);
             gameMenu.GameOver();
         }
     }
@@ -112,6 +124,7 @@ public class Warper : MonoBehaviour {
     {
         var LeftRight = 0;
         var screenWidth = Screen.width / 2;
+
 #if UNITY_EDITOR
         if (_gameMode > 0)
         {

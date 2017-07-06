@@ -1,17 +1,19 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class PyramidGenerator: WarpstoneGenerator {
 
     public WarpStone warpStonePrefab;
     public WarpSettings.WarpStoneMode[] warpstone;
+    private List<int> warpStoneFactors = new List<int>() {1,1,1,1,2};
 
     public override void GenerateWarpstones(Warp warp)
     {
         for(int i = 0; i < warp.CurveSegmentCount; i++)
         {
             int[] indexes = new int[warp.warpSegmentCount];
-            int numberOfWarpstones = Random.Range(1, 4);
-            int depthFactor = 0;
+
+            int numberOfWarpstones = Random.Range(1, warp.maxNumberOfWarpStones);
             for(int n = 0; n < numberOfWarpstones; n++)
             {
                 int startIndex = Random.Range(0, warp.warpSegmentCount);
@@ -21,10 +23,10 @@ public class PyramidGenerator: WarpstoneGenerator {
                 }
 
                 indexes[startIndex] = 1;
-                int warpStoneFactor = Random.Range(1, 3);
-                if (warpStoneFactor > depthFactor)
+                int warpStoneFactor = warpStoneFactors[Random.Range(0, 5)];
+                if(warp.warpSegmentCount < 20)
                 {
-                    depthFactor = warpStoneFactor;
+                    warpStoneFactor = 1;
                 }
 
                 WarpStone wStone = Instantiate<WarpStone>(warpStonePrefab);
@@ -44,7 +46,7 @@ public class PyramidGenerator: WarpstoneGenerator {
                 wStone.Generate();
             }
 
-            i += depthFactor;
+            i += warp.warpStoneDistance;
         }
     }
 }
