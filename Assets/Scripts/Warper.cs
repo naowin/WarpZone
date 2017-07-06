@@ -12,7 +12,8 @@ public class Warper : MonoBehaviour {
     public GameObject WarpTrail;
     public GameObject BoomBloom;
 
-    public Text warpDistanceText; 
+    public Text warpDistanceText;
+    public Text gameOverText;
 
     private Warp currentSection;
     private float spaceRotation;
@@ -74,6 +75,7 @@ public class Warper : MonoBehaviour {
         ws.transform.localRotation = Quaternion.Euler(0f, 0f, systemRotation);
         UpdateSparkRotation();
         warpDistanceText.text = string.Format("{0}", (int)warpDistance);
+        gameOverText.text = string.Format("Warp Distance: {0}", (int)warpDistance);
     }
 
     private void SetupCurrentWarp()

@@ -16,7 +16,7 @@ public class GameMenu : MonoBehaviour {
 
     public void GameOver()
     {
-        this.ChangeMenu(1);
+        this.ChangeMenu(7);
         gameObject.SetActive(true);
     }
 

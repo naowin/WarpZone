@@ -53,7 +53,7 @@ public class HardmodeWarpstoneGenerator : WarpstoneGenerator {
                 wStone.Generate();
             }
 
-            i += warpStoneFactor;
+            i += warp.warpStoneDistance;
             startIndex += warpStoneFactor * direction;
         }
     }
