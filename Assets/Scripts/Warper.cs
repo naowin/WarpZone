@@ -142,16 +142,22 @@ public class Warper : MonoBehaviour {
 
         return Input.GetAxis("Horizontal");
 #endif
-
+        
 #if UNITY_ANDROID
-            if (Input.touchCount > 0)
+        if (Input.touchCount > 0)
         {
+            var xPos = Input.GetTouch(0).position.x;
+            Debug.Log(xPos);
             // touch x position is bigger than half of the screen, moving right
-            if (Input.GetTouch(0).position.x > screenWidth)
+            if (xPos > screenWidth)
+            {
                 LeftRight = 1;
+            }
             // touch x position is smaller than half of the screen, moving left
-            else if (Input.GetTouch(0).position.x < screenWidth)
+            else if (xPos < screenWidth)
+            {
                 LeftRight = -1;
+            }
         }
 #endif
 

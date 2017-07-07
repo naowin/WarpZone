@@ -33,9 +33,7 @@ public class BlockGenerator: WarpstoneGenerator {
                 false);
             wStone.transform.SetParent(warp.transform, false);
             wStone.Generate();
-
-            Debug.Log("BlockGenerator: WarpStoneDistance is currently " + warp.warpStoneDistance);
-
+            
             i += warp.warpStoneDistance;
             startIndex += warpStoneFactor * direction;
         }
